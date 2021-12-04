@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const Stores = () => {
+const Stores = (props) => {
   return (
     <div>
       <h1>Stores</h1>

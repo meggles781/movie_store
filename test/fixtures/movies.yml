@@ -4,8 +4,10 @@ one:
   title: MyString
   duration: MyString
   genre: MyString
+  store: one
 
 two:
   title: MyString
   duration: MyString
   genre: MyString
+  store: two

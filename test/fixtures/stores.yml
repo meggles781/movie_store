@@ -3,9 +3,7 @@
 one:
   name: MyString
   location: MyString
-  movie: one
 
 two:
   name: MyString
   location: MyString
-  movie: two
