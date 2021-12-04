@@ -1,45 +1,55 @@
 class MoviesController < ApplicationController
+  before_action :set_store
+
   def index
-    @movies = Movies.all
-    render component: 'Movies' , props: { movies: @movies }
+    @movies = @store.movies
+    render component: 'Movies', props:{movies: @movies, store: @store}
   end
 
   def show
-    @Mmovie = Movie.find(param[:id])
-    render component: 'Movie', props: { movies: @movies }
+    @movie = Movie.find(params[:id])
+    render component: 'Movie', props:{movie: @movie, store: @store}
   end
 
   def new
-    @movie = Movie.new
-    render component: 'MovieNew' , props: { movie: @movie } 
-  end
-
-  def edit
-    @movie =  Movie.find(params[:id])
-    render component: 'MovieEdit' , props { movie: @movie }
+    @movie = @store.movies.new
+    render component: 'MovieNew', props:{store: @store, movie: @movie}
   end
 
   def create
-    @movie = Movie.new(movie_params)
+    @movie = @store.movies.new(movie_params)
     if @movie.save
-      #
+      redirect_to store_movies_path(@store)
     else
-      render component: 'MovieNew', props: { movie: @movie }
+      render :new
     end
+  end
+
+  def edit
+    @movie = Movie.find(params[:id])
+    render component: 'MovieEdit', props:{store: @store, movie: @movie}
   end
 
   def update
     @movie = Movie.find(params[:id])
-    if @movie.upate(movie_params)
-      # do something
+    if @movie.update(movie_params)
+      redirect_to store_movies_path(@store)
     else
-      render component: 'MovieEdit', props: {movie: @movie }
-    end
+      render :edit
   end
 
-  private 
+  def destroy
+    @movie = Movie.find(params[:id])
+    @movie.destroy
+    redirect_to store_movies_path(@store)
+  end
 
-  def  movie_params
-    params.require(:movie).permit(:title, :genre, :duration)
+  private
+  def set_store
+    @store = Store.find(params[:store_id])
+  end
+  
+  def movie_params
+    params.require(:movie).permit(:title, :duration, :genre)
   end
 end
